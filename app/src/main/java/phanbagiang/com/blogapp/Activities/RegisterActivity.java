@@ -1,5 +1,6 @@
 package phanbagiang.com.blogapp.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -18,6 +19,17 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import java.net.URI;
 
 import phanbagiang.com.blogapp.R;
@@ -31,6 +43,9 @@ public class RegisterActivity extends AppCompatActivity {
     static int requestCode=113;
 
     Uri uriPictureSelected;
+
+    //FireBase
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +63,9 @@ public class RegisterActivity extends AppCompatActivity {
         regPassword2=findViewById(R.id.regPassword2);
         regBtn=findViewById(R.id.regbtn);
         progressBar=findViewById(R.id.progressBar);
+
+        // firebase
+        mAuth=FirebaseAuth.getInstance();
     }
     private void addEvents(){
         regImage.setOnClickListener(new View.OnClickListener() {
@@ -65,14 +83,86 @@ public class RegisterActivity extends AppCompatActivity {
         regBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
                 regBtn.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                final String name=regName.getText().toString();
+                final String email=regMail.getText().toString();
+                final String passWord1=regPassword1.getText().toString();
+                final String passWord2=regPassword2.getText().toString();
+                if(name.isEmpty()||email.isEmpty()||!passWord1.equals(passWord2)){
+                    Toast.makeText(RegisterActivity.this, "Please verify all Fields!", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    regBtn.setVisibility(View.VISIBLE);
+                }
+                else{
+                    CreateUserAccount(name,email,passWord1);
+                }
             }
         });
     }
 
+    private void CreateUserAccount(final String name, String email, String passWord1) {
+        mAuth.createUserWithEmailAndPassword(email, passWord1)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Toast.makeText(RegisterActivity.this, "Register completed!", Toast.LENGTH_SHORT).show();
+                            // update User
+                            updateUser(name,uriPictureSelected,mAuth.getCurrentUser());
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(RegisterActivity.this, "Register Failed!", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.INVISIBLE);
+                            regBtn.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+    }
+
+    private void updateUser(final String name, Uri uriPictureSelected, final FirebaseUser currentUser) {
+       // currentUser.get
+        StorageReference mStorageRef=FirebaseStorage.getInstance().getReference().child("user_photos");
+        final StorageReference imageFilepath=mStorageRef.child(uriPictureSelected.getLastPathSegment());
+        imageFilepath.putFile(uriPictureSelected).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // Image upload successfully
+                // now we can get our image url
+                imageFilepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        // uri contain image uri
+                        UserProfileChangeRequest updateProfile=new UserProfileChangeRequest.Builder()
+                                .setDisplayName(name)
+                                .setPhotoUri(uri)
+                                .build();
+                        currentUser.updateProfile(updateProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    Toast.makeText(RegisterActivity.this, "Register completed!", Toast.LENGTH_SHORT).show();
+                                    UpdateUI();
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    private void UpdateUI() {
+
+        Intent intent=new Intent(RegisterActivity.this,HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     private void openGallery() {
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        //Note: Intent.ACTION_PICK
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, requestCode);
     }
