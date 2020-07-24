@@ -43,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
     static int requestCode=113;
 
     Uri uriPictureSelected;
-
+    private boolean isSelectedImage=false;
     //FireBase
     private FirebaseAuth mAuth;
 
@@ -94,6 +94,11 @@ public class RegisterActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.INVISIBLE);
                     regBtn.setVisibility(View.VISIBLE);
                 }
+                else if(isSelectedImage==false){
+                    Toast.makeText(RegisterActivity.this, "please select an Image from Gallery!", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    regBtn.setVisibility(View.VISIBLE);
+                }
                 else{
                     CreateUserAccount(name,email,passWord1);
                 }
@@ -101,7 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void CreateUserAccount(final String name, String email, String passWord1) {
+    private void CreateUserAccount(final String name, final String email, final String passWord1) {
         mAuth.createUserWithEmailAndPassword(email, passWord1)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -110,10 +115,10 @@ public class RegisterActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(RegisterActivity.this, "Register completed!", Toast.LENGTH_SHORT).show();
                             // update User
-                            updateUser(name,uriPictureSelected,mAuth.getCurrentUser());
+                            updateUser(email,passWord1,name,uriPictureSelected,mAuth.getCurrentUser());
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(RegisterActivity.this, "Register Failed!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.INVISIBLE);
                             regBtn.setVisibility(View.VISIBLE);
                         }
@@ -121,7 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
                 });
     }
 
-    private void updateUser(final String name, Uri uriPictureSelected, final FirebaseUser currentUser) {
+    private void updateUser(final String email, final String passWord1, final String name, Uri uriPictureSelected, final FirebaseUser currentUser) {
        // currentUser.get
         StorageReference mStorageRef=FirebaseStorage.getInstance().getReference().child("user_photos");
         final StorageReference imageFilepath=mStorageRef.child(uriPictureSelected.getLastPathSegment());
@@ -143,7 +148,7 @@ public class RegisterActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     Toast.makeText(RegisterActivity.this, "Register completed!", Toast.LENGTH_SHORT).show();
-                                    UpdateUI();
+                                    UpdateUI(email,passWord1);
                                 }
                             }
                         });
@@ -153,12 +158,16 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void UpdateUI() {
+    private void UpdateUI(String email,String pass) {
 
-        Intent intent=new Intent(RegisterActivity.this,HomeActivity.class);
+        Intent intent=new Intent(RegisterActivity.this,LoginActivity.class);
+        intent.putExtra("em",email);
+        intent.putExtra("pass",pass);
         startActivity(intent);
         finish();
     }
+
+
 
     private void openGallery() {
         Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -204,6 +213,7 @@ public class RegisterActivity extends AppCompatActivity {
         if(requestCode==requestCode && resultCode==RESULT_OK &&data!=null){
             uriPictureSelected=data.getData();
             regImage.setImageURI(uriPictureSelected);
+            isSelectedImage=true;
         }
     }
 }
