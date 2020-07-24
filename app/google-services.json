@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "666116522129",
+    "firebase_url": "https://communityblog-e7b51.firebaseio.com",
+    "project_id": "communityblog-e7b51",
+    "storage_bucket": "communityblog-e7b51.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666116522129:android:add0e0ca838c1fe85c7f30",
+        "android_client_info": {
+          "package_name": "phanbagiang.com.blogapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "666116522129-i3gi67qtarip8erf91kqnc8ap9bvb8iv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "phanbagiang.com.blogapp",
+            "certificate_hash": "d27fe108cebf83fc9ae785946fd025e4a7f40b61"
+          }
+        },
+        {
+          "client_id": "666116522129-tqvi7k6vig1o4ufgtbvqrridnbc1vles.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIFiHdZZEHZe2wyGyYLwAhKiU4stGYI7A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "666116522129-tqvi7k6vig1o4ufgtbvqrridnbc1vles.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
