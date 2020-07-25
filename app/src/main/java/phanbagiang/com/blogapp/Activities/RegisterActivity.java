@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -90,12 +91,14 @@ public class RegisterActivity extends AppCompatActivity {
                 final String passWord1=regPassword1.getText().toString();
                 final String passWord2=regPassword2.getText().toString();
                 if(name.isEmpty()||email.isEmpty()||!passWord1.equals(passWord2)){
-                    Toast.makeText(RegisterActivity.this, "Please verify all Fields!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(RegisterActivity.this, "Please verify all Fields!", Toast.LENGTH_SHORT).show();
+                    showMessage("Please verify all Fields!");
                     progressBar.setVisibility(View.INVISIBLE);
                     regBtn.setVisibility(View.VISIBLE);
                 }
                 else if(isSelectedImage==false){
-                    Toast.makeText(RegisterActivity.this, "please select an Image from Gallery!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(RegisterActivity.this, "please select an Image from Gallery!", Toast.LENGTH_SHORT).show();
+                    showMessage("please select an Image from Gallery!");
                     progressBar.setVisibility(View.INVISIBLE);
                     regBtn.setVisibility(View.VISIBLE);
                 }
@@ -113,7 +116,8 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(RegisterActivity.this, "Register completed!", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(RegisterActivity.this, "Register completed!", Toast.LENGTH_SHORT).show();
+                            showMessage("Register completed!");
                             // update User
                             updateUser(email,passWord1,name,uriPictureSelected,mAuth.getCurrentUser());
                         } else {
@@ -125,7 +129,10 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
     }
-
+    private void showMessage(String mess){
+        Snackbar.make(regBtn,mess,Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
+                .show();
+    }
     private void updateUser(final String email, final String passWord1, final String name, Uri uriPictureSelected, final FirebaseUser currentUser) {
        // currentUser.get
         StorageReference mStorageRef=FirebaseStorage.getInstance().getReference().child("user_photos");
@@ -147,7 +154,8 @@ public class RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
-                                    Toast.makeText(RegisterActivity.this, "Register completed!", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(RegisterActivity.this, "Register completed!", Toast.LENGTH_SHORT).show();
+                                    showMessage(task.getException().getMessage());
                                     UpdateUI(email,passWord1);
                                 }
                             }
@@ -160,9 +168,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void UpdateUI(String email,String pass) {
 
-        Intent intent=new Intent(RegisterActivity.this,LoginActivity.class);
-        intent.putExtra("em",email);
-        intent.putExtra("pass",pass);
+        Intent intent=new Intent(RegisterActivity.this,MainActivity.class);
         startActivity(intent);
         finish();
     }
@@ -188,8 +194,8 @@ public class RegisterActivity extends AppCompatActivity {
                 // Show an expanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
-                Toast.makeText(this, "Please accept the required for permission!", Toast.LENGTH_SHORT).show();
-
+                //Toast.makeText(this, "Please accept the required for permission!", Toast.LENGTH_SHORT).show();
+                showMessage("Please accept the required for permission!");
             } else {
 
                 // No explanation needed, we can request the permission.

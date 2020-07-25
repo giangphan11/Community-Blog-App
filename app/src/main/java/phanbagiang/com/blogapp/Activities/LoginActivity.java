@@ -2,6 +2,7 @@ package phanbagiang.com.blogapp.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,18 +15,23 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import phanbagiang.com.blogapp.R;
 
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
+
 public class LoginActivity extends AppCompatActivity {
     TextView login_reg;
     EditText edtMail, edtPass;
     Button btnLogin;
     ProgressBar progressBar;
-
+    Toolbar toolbar;
     // firebase
     private FirebaseAuth mAuth;
 
@@ -33,7 +39,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        toolbar=findViewById(R.id.myToolbar);
+        setSupportActionBar(toolbar);
         addControls();
         addEvents();
     }
@@ -90,14 +97,15 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user){
         if(user!=null){
-            Intent intent=new Intent(LoginActivity.this,HomeActivity.class);
-            intent.putExtra("name",user.getDisplayName());
+            Intent intent=new Intent(LoginActivity.this,MainActivity.class);
             startActivity(intent);
             finish();
         }
     }
     private void showMessage(String mess){
-        Toast.makeText(this, mess, Toast.LENGTH_SHORT).show();
+        Snackbar.make(btnLogin,mess,Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
+                .show();
+        //Toast.makeText(this, mess, Toast.LENGTH_SHORT).show();
     }
     private void logIn(String email, String password){
         mAuth.signInWithEmailAndPassword(email, password)

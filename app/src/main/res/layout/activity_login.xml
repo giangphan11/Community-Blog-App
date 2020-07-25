@@ -56,19 +56,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/log_edtEmail" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/log_btnLogin"
         android:layout_width="345dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
+        android:backgroundTint="#fd79a8"
         android:layout_marginStart="30dp"
         android:layout_marginTop="80dp"
+        app:cornerRadius="30dp"
         android:layout_marginEnd="30dp"
-        android:background="@drawable/login_btn_custom"
         android:clickable="true"
-        android:fontFamily="sans-serif-condensed-medium"
         android:foreground="?android:attr/selectableItemBackground"
         android:inputType="text"
         android:text="Log in"
+        android:fontFamily="sans-serif-condensed"
         android:textColor="#fff"
         android:textSize="24dp"
         app:layout_constraintEnd_toEndOf="parent"

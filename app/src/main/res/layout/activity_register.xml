@@ -6,17 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".Activities.RegisterActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/myToolbar"
+        app:title="Register"
+        app:titleTextColor="#fff"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Light"
+        app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:layout_height="?android:attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <de.hdodenhof.circleimageview.CircleImageView
 
         android:id="@+id/regImage"
         android:layout_width="96dp"
         android:layout_height="96dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="10dp"
         android:src="@drawable/userphoto"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/myToolbar" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -95,7 +107,7 @@
 
     <Button
         android:id="@+id/regbtn"
-        android:layout_width="wrap_content"
+        android:layout_width="265dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:background="@drawable/btn_custom"
