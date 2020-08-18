@@ -1,4 +1,4 @@
-package phanbagiang.com.blogapp.Activities.ui.gallery;
+package phanbagiang.com.blogapp.Activities.ui.setting;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,20 +12,19 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import phanbagiang.com.blogapp.Activities.RegisterActivity;
 import phanbagiang.com.blogapp.R;
 
-public class GalleryFragment extends Fragment {
+public class SettingFragment extends Fragment {
 
-    private GalleryViewModel galleryViewModel;
+    private SettingViewModel settingViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                ViewModelProviders.of(this).get(GalleryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        settingViewModel =
+                ViewModelProviders.of(this).get(SettingViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_setting, container, false);
+        final TextView textView = root.findViewById(R.id.text_slideshow);
+        settingViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

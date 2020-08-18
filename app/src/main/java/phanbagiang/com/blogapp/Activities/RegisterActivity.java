@@ -156,7 +156,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 if(task.isSuccessful()){
                                     //Toast.makeText(RegisterActivity.this, "Register completed!", Toast.LENGTH_SHORT).show();
                                     showMessage(task.getException().getMessage());
-                                    UpdateUI(email,passWord1);
+                                    UpdateUI();
                                 }
                             }
                         });
@@ -166,9 +166,9 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void UpdateUI(String email,String pass) {
-
+    private void UpdateUI() {
         Intent intent=new Intent(RegisterActivity.this,MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }

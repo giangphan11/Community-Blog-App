@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -61,20 +62,28 @@ public class MainActivity extends AppCompatActivity {
         addControls();
     }
     private void addControls(){
+
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         mFirebaseAuth=FirebaseAuth.getInstance();
         mUser=mFirebaseAuth.getCurrentUser();
-        View headerView=navigationView.getHeaderView(0);
-        TextView txtName=headerView.findViewById(R.id.main_txtName);
-        TextView txtMail=headerView.findViewById(R.id.main_txtMail);
-        ImageView image=headerView.findViewById(R.id.main_image);
-        txtMail.setText(mUser.getEmail());
-        txtName.setText(mUser.getDisplayName());
-        Glide.with(this)
-                .load(mUser.getPhotoUrl())
-                .placeholder(R.drawable.userphoto)
-                .into(image);
-
-
+        if(mUser!=null){
+            View headerView=navigationView.getHeaderView(0);
+            TextView txtName=headerView.findViewById(R.id.main_txtName);
+            TextView txtMail=headerView.findViewById(R.id.main_txtMail);
+            ImageView image=headerView.findViewById(R.id.main_image);
+            txtMail.setText(mUser.getEmail());
+            txtName.setText(mUser.getDisplayName());
+            Glide.with(this)
+                    .load(mUser.getPhotoUrl())
+                    .placeholder(R.drawable.userphoto)
+                    .into(image);
+        }
     }
 
     @Override
