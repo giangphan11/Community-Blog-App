@@ -1,27 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#fd79a8"
     android:layout_height="match_parent"
     tools:context=".Activities.ui.home.HomeFragment">
 
-    <TextView
-        android:id="@+id/text_home"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_post"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/home_fab"
@@ -30,6 +20,10 @@
         android:layout_margin="20dp"
         android:src="@drawable/ic_baseline_create_24"
         android:layout_width="wrap_content"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+        app:layout_anchor="@id/list_post"
+        app:layout_anchorGravity="bottom|right|end"
+        app:fabSize="auto"
         android:layout_height="wrap_content"/>
 
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

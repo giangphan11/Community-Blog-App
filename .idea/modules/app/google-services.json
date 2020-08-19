@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "666116522129-7m92r8dtqf25vsic2fj9iin10k6686qd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "phanbagiang.com.blogapp",
+            "certificate_hash": "b262553a446b9ebf0bed3b46c5403ed9b6288b8b"
+          }
+        },
+        {
           "client_id": "666116522129-i3gi67qtarip8erf91kqnc8ap9bvb8iv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

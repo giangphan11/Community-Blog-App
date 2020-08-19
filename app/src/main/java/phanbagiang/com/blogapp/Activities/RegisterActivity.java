@@ -44,7 +44,6 @@ public class RegisterActivity extends AppCompatActivity {
     static int requestCode=113;
 
     Uri uriPictureSelected;
-    private boolean isSelectedImage=false;
     //FireBase
     private FirebaseAuth mAuth;
 
@@ -96,7 +95,7 @@ public class RegisterActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.INVISIBLE);
                     regBtn.setVisibility(View.VISIBLE);
                 }
-                else if(isSelectedImage==false){
+                else if(uriPictureSelected==null){
                     //Toast.makeText(RegisterActivity.this, "please select an Image from Gallery!", Toast.LENGTH_SHORT).show();
                     showMessage("please select an Image from Gallery!");
                     progressBar.setVisibility(View.INVISIBLE);
@@ -219,7 +218,6 @@ public class RegisterActivity extends AppCompatActivity {
         if(requestCode==requestCode && resultCode==RESULT_OK &&data!=null){
             uriPictureSelected=data.getData();
             regImage.setImageURI(uriPictureSelected);
-            isSelectedImage=true;
         }
     }
 }
