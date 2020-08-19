@@ -1,6 +1,7 @@
 package phanbagiang.com.blogapp.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import phanbagiang.com.blogapp.Activities.PostDetailActivity;
 import phanbagiang.com.blogapp.R;
 import phanbagiang.com.blogapp.model.Post;
 
@@ -35,11 +37,26 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Post post=mData.get(position);
+        final Post post=mData.get(position);
         Glide.with(mContext).load(post.getPicture()).into(holder.imgMain);
         Glide.with(mContext).load(post.getUserPhoto()).into(holder.imgUser);
         holder.txtTitle.setText(post.getTitle());
         holder.txtUsername.setText(post.getUserName());
+
+        holder.imgMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, PostDetailActivity.class);
+                intent.putExtra("pic",post.getPicture());
+                intent.putExtra("pic2",post.getUserPhoto());
+                intent.putExtra("title",post.getTitle());
+                intent.putExtra("des",post.getDes());
+                long timeSt=(long)post.getTimeStamp();
+                intent.putExtra("timeStamp",timeSt);
+                intent.putExtra("postKey",post.getPostKey());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
