@@ -86,7 +86,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/row_username"
             app:layout_constraintStart_toEndOf="@+id/row_username"
             app:layout_constraintTop_toTopOf="@+id/row_username"
-            app:srcCompat="@drawable/ic_tick22px" />
+            app:srcCompat="@drawable/ic_tick20px" />
 
         <TextView
             android:id="@+id/row_date"

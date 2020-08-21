@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="phanbagiang.com.blogapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,20 +13,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.PostDetailActivity"></activity>
+        <activity android:name=".SplashActivity"></activity>
+        <activity android:name=".Activities.PostDetailActivity" />
         <activity
             android:name=".Activities.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.Transition" />
-        <activity android:name=".Activities.LoginActivity" android:theme="@style/AppTheme.Transition">
+        <activity
+            android:name=".Activities.LoginActivity"
+            android:theme="@style/AppTheme.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.RegisterActivity"
-            android:theme="@style/AppTheme.register"/>
+        <activity
+            android:name=".Activities.RegisterActivity"
+            android:theme="@style/AppTheme.register" />
+
+        <service android:name=".Service.Service">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
