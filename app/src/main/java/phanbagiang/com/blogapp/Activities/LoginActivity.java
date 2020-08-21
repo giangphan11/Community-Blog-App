@@ -27,19 +27,19 @@ import phanbagiang.com.blogapp.R;
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT;
 
 public class LoginActivity extends AppCompatActivity {
-    TextView login_reg;
+
     EditText edtMail, edtPass;
-    Button btnLogin;
+    Button btnLogin, btnRegister;
     ProgressBar progressBar;
     Toolbar toolbar;
     // firebase
     private FirebaseAuth mAuth;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        toolbar=findViewById(R.id.myToolbar);
         setSupportActionBar(toolbar);
         addControls();
         addEvents();
@@ -50,16 +50,11 @@ public class LoginActivity extends AppCompatActivity {
         edtMail=findViewById(R.id.log_edtEmail);
         edtPass=findViewById(R.id.log_edtPass);
         btnLogin=findViewById(R.id.log_btnLogin);
-        login_reg=findViewById(R.id.login_register);
-
-        Intent intent=getIntent();
-        if(intent!=null){
-            edtMail.setText(intent.getStringExtra("em"));
-            edtPass.setText(intent.getStringExtra("pass"));
-        }
+        btnRegister=findViewById(R.id.btnRegister);
+        intent=new Intent(LoginActivity.this,MainActivity.class);
     }
     private void addEvents(){
-        login_reg.setOnClickListener(new View.OnClickListener() {
+        btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(LoginActivity.this,RegisterActivity.class);
@@ -75,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                 btnLogin.setVisibility(View.INVISIBLE);
 
                 if(mail.isEmpty()||pass.isEmpty()){
-                    showMessage("Please input your Email or Password !");
+                    showMessage("Vui lòng điền đầy đủ các trường !!!");
                     btnLogin.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.INVISIBLE);
                 }
@@ -91,16 +86,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser user=mAuth.getCurrentUser();
         if(user!=null){
-            updateUI(user);
+            updateUI();
         }
     }
 
-    private void updateUI(FirebaseUser user){
-        if(user!=null){
-            Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
+    private void updateUI(){
+        startActivity(intent);
+        finish();
     }
     private void showMessage(String mess){
         Snackbar.make(btnLogin,mess,Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
@@ -114,15 +106,13 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            showMessage("Login success!");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            showMessage("Đăng nhập thành công !");
+                            updateUI();
                         } else {
                             // If sign in fails, display a message to the user.
                             showMessage(task.getException().getMessage());
                             btnLogin.setVisibility(View.VISIBLE);
                             progressBar.setVisibility(View.INVISIBLE);
-                            updateUI(null);
                             // ...
                         }
 

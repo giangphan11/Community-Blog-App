@@ -22,22 +22,27 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.net.URI;
+import java.util.HashMap;
 
 import phanbagiang.com.blogapp.R;
+import phanbagiang.com.blogapp.model.User;
 
 public class RegisterActivity extends AppCompatActivity {
     Button regBtn;
-    ImageView regImage;
+    ImageView regImage, img_btnBack;
     EditText regName,regMail, regPassword1, regPassword2;
     ProgressBar progressBar;
 
@@ -46,11 +51,14 @@ public class RegisterActivity extends AppCompatActivity {
     Uri uriPictureSelected;
     //FireBase
     private FirebaseAuth mAuth;
+    private DatabaseReference mReference;
+    private StorageReference mStorageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
         addControls();
         addEvents();
     }
@@ -63,9 +71,11 @@ public class RegisterActivity extends AppCompatActivity {
         regPassword2=findViewById(R.id.regPassword2);
         regBtn=findViewById(R.id.regbtn);
         progressBar=findViewById(R.id.progressBar);
-
+        img_btnBack=findViewById(R.id.reg_btnBaack);
         // firebase
         mAuth=FirebaseAuth.getInstance();
+        mReference= FirebaseDatabase.getInstance().getReference("Users");
+        mStorageRef=FirebaseStorage.getInstance().getReference().child("user_photos");
     }
     private void addEvents(){
         regImage.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +89,12 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
-
+        img_btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         regBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,20 +136,16 @@ public class RegisterActivity extends AppCompatActivity {
                             updateUser(email,passWord1,name,uriPictureSelected,mAuth.getCurrentUser());
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            showMessage(task.getException().getMessage());
                             progressBar.setVisibility(View.INVISIBLE);
                             regBtn.setVisibility(View.VISIBLE);
                         }
                     }
                 });
     }
-    private void showMessage(String mess){
-        Snackbar.make(regBtn,mess,Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
-                .show();
-    }
+
     private void updateUser(final String email, final String passWord1, final String name, Uri uriPictureSelected, final FirebaseUser currentUser) {
-       // currentUser.get
-        StorageReference mStorageRef=FirebaseStorage.getInstance().getReference().child("user_photos");
+
         final StorageReference imageFilepath=mStorageRef.child(uriPictureSelected.getLastPathSegment());
         imageFilepath.putFile(uriPictureSelected).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -144,35 +155,31 @@ public class RegisterActivity extends AppCompatActivity {
                 imageFilepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        // uri contain image uri
-                        UserProfileChangeRequest updateProfile=new UserProfileChangeRequest.Builder()
-                                .setDisplayName(name)
-                                .setPhotoUri(uri)
-                                .build();
-                        currentUser.updateProfile(updateProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        User user=new User(currentUser.getUid(),name,uri.toString(),email,passWord1);
+                        mReference.child(currentUser.getUid()).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()){
-                                    //Toast.makeText(RegisterActivity.this, "Register completed!", Toast.LENGTH_SHORT).show();
-                                    showMessage(task.getException().getMessage());
-                                    UpdateUI();
-                                }
+                            public void onSuccess(Void aVoid) {
+                                updateUI();
                             }
                         });
+
                     }
                 });
             }
         });
     }
 
-    private void UpdateUI() {
-        Intent intent=new Intent(RegisterActivity.this,MainActivity.class);
+    private void updateUI() {
+        Intent intent=new Intent(getApplicationContext(),MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
 
-
+    private void showMessage(String mess){
+        Snackbar.make(regBtn,mess,Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
+                .show();
+    }
 
     private void openGallery() {
         Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);

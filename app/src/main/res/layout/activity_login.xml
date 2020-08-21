@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/AppTheme.Transition"
     android:background="@color/colorPrimary"
     tools:context=".Activities.LoginActivity">
 
@@ -11,21 +13,23 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
+        android:layout_marginEnd="30dp"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="Log in"
+        android:text="Blog App"
         android:textColor="#fff"
-        android:textSize="64dp"
+        android:textSize="54dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.23"
+        app:layout_constraintStart_toEndOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
     <EditText
         android:id="@+id/log_edtEmail"
         android:layout_width="345dp"
         android:layout_height="50dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/login_edt_custom"
         android:ems="10"
@@ -48,7 +52,7 @@
         android:background="@drawable/login_edt_custom"
         android:ems="10"
         android:fontFamily="sans-serif-condensed-medium"
-        android:hint="Password"
+        android:hint="Mật khẩu"
         android:inputType="textPassword"
         android:paddingLeft="30dp"
         android:textSize="24dp"
@@ -60,34 +64,19 @@
         android:id="@+id/log_btnLogin"
         android:layout_width="345dp"
         android:layout_height="60dp"
-        android:backgroundTint="#fd79a8"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="80dp"
-        app:cornerRadius="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
+        android:backgroundTint="#6c5ce7"
         android:clickable="true"
+        android:fontFamily="sans-serif-condensed"
         android:foreground="?android:attr/selectableItemBackground"
         android:inputType="text"
-        android:text="Log in"
-        android:fontFamily="sans-serif-condensed"
+        android:text="Đăng nhập"
         android:textColor="#fff"
         android:textSize="24dp"
+        app:cornerRadius="30dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/log_edtPass" />
-
-    <TextView
-        android:id="@+id/login_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Register?"
-        android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:textColor="#fff"
-        android:fontFamily="sans-serif"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.89"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/log_edtPass" />
 
@@ -101,5 +90,93 @@
         app:layout_constraintEnd_toEndOf="@+id/log_btnLogin"
         app:layout_constraintStart_toStartOf="@+id/log_btnLogin"
         app:layout_constraintTop_toTopOf="@+id/log_btnLogin" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/ic_blogger"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Đăng nhập"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+
+    <LinearLayout
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+        <View
+            android:layout_width="100dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:background="?android:attr/listDivider"
+            android:textAlignment="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HOẶC" />
+
+        <View
+            android:layout_width="100dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:background="?android:attr/listDivider"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRegister"
+        android:layout_width="345dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
+        android:inputType="text"
+        android:text="Tạo tài khoản mới"
+        app:backgroundTint="#44bd32"
+        app:cornerRadius="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="Quên mật khẩu?"
+        android:textColor="#6c5ce7"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/log_btnLogin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

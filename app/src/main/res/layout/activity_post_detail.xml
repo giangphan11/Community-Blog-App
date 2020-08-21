@@ -80,26 +80,30 @@
         <EditText
             android:id="@+id/detail_edt_comment"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginStart="3dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
+            android:paddingLeft="20dp"
+            android:background="@drawable/edt_comment_cus"
             android:inputType="textPersonName"
-            android:hint="Comment here"
-            android:background="@drawable/edt_custom"
+            android:hint="Viết bình luận"
             app:layout_constraintEnd_toStartOf="@+id/detail_btnSend"
             app:layout_constraintStart_toEndOf="@+id/detail_imaCurrenUser"
             app:layout_constraintTop_toBottomOf="@+id/detail_des" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/detail_btnSend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:text="Send"
-            app:cornerRadius="10dp"
+            app:cornerRadius="20dp"
+            app:backgroundTint="#0984e3"
+            app:icon="@drawable/ic_send"
+            app:iconGravity="textEnd"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_edt_comment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_des" />
 
@@ -109,7 +113,7 @@
             android:layout_height="32dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_edt_comment"
             app:layout_constraintEnd_toStartOf="@+id/detail_edt_comment"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/detail_edt_comment" />
@@ -129,8 +133,21 @@
             android:layout_height="100dp"
             android:src="@drawable/black_gradient2"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/detail_img" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_edt_comment" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

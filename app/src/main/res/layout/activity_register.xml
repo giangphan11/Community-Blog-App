@@ -1,22 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.RegisterActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/myToolbar"
-        app:title="Register"
-        app:titleTextColor="#fff"
-        android:theme="@style/ThemeOverlay.MaterialComponents.Light"
-        app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
         android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="#44bd32"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
         android:layout_height="?android:attr/actionBarSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/reg_btnBaack"
+            android:src="@drawable/ic_back"
+            android:layout_width="48dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:layout_height="48dp"/>
+            <ImageView
+                android:id="@+id/reg_ico"
+                android:src="@drawable/ic_blogger"
+                android:layout_width="38dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/reg_btnBaack"
+                android:layout_marginLeft="10dp"
+                android:layout_height="38dp"/>
+            <TextView
+                android:text="Đăng ký tài khoản"
+                android:layout_toRightOf="@+id/reg_ico"
+                android:layout_marginLeft="10dp"
+                android:textSize="26sp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
 
@@ -28,7 +58,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myToolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -46,7 +76,7 @@
         android:ems="10"
         android:textColor="#574b90"
         android:fontFamily="sans-serif-condensed-medium"
-        android:hint="Name"
+        android:hint="Tên"
         android:inputType="textPersonName"
         android:paddingLeft="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -81,7 +111,7 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/edt_custom"
         android:ems="10"
-        android:hint="Password"
+        android:hint="Mật khẩu"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -99,7 +129,7 @@
         android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="textPassword"
-        android:hint="Confirm Password"
+        android:hint="Xác nhận mật khẩu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -111,7 +141,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:background="@drawable/btn_custom"
-        android:text="Register"
+        android:text="Đăng ký"
         android:textColor="#fff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

@@ -2,7 +2,9 @@ package phanbagiang.com.blogapp.Activities.ui.home;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -14,6 +16,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -41,6 +44,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -49,10 +53,10 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.List;
 
-import phanbagiang.com.blogapp.Activities.RegisterActivity;
 import phanbagiang.com.blogapp.Adapter.PostAdapter;
 import phanbagiang.com.blogapp.R;
 import phanbagiang.com.blogapp.model.Post;
+import phanbagiang.com.blogapp.model.User;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -62,15 +66,19 @@ public class HomeFragment extends Fragment {
     private FloatingActionButton pop_fab;
     private Dialog dialogPost;
 
+    //firebase
     FirebaseUser mUser;
+    DatabaseReference mReference;
+
     private Uri uriPictureSelected;
     static int requestCode=113;
     private static final String TAG = "HomeFragment";
     private EditText edtTitle, edtDes;
     private ImageView img_Avatarr, imgMain, imgPost;
-    private ProgressBar progressBar;
 
-    private RecyclerView recyclerView;
+    private ProgressBar progressBar;
+    private RecyclerView listPost;
+    private LinearLayoutManager linearLayoutManager;
     PostAdapter postAdapter;
     List<Post>mData;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -88,33 +96,24 @@ public class HomeFragment extends Fragment {
 //                textView.setText(s);
 //            }
 //        });
-        mUser= FirebaseAuth.getInstance().getCurrentUser();
-        initPopup();
         pop_fab=root.findViewById(R.id.home_fab);
-        pop_fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogPost.show();
-            }
-        });
-        recyclerView=root.findViewById(R.id.list_post);
+        listPost=root.findViewById(R.id.list_post);
+        mUser= FirebaseAuth.getInstance().getCurrentUser();
+        mReference=FirebaseDatabase.getInstance().getReference("Users");
+
+        initPopup();
         addControls();
         addEvents();
         return root;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-    }
-
     private void addControls(){
         mData=new ArrayList<>();
         postAdapter=new PostAdapter(getContext(),mData);
-        recyclerView.setAdapter(postAdapter);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
+        listPost.setAdapter(postAdapter);
+        listPost.setHasFixedSize(true);
+        linearLayoutManager=new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false);
+        listPost.setLayoutManager(linearLayoutManager);
 
         DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Post");
         reference.addValueEventListener(new ValueEventListener() {
@@ -134,7 +133,16 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+
+
     private void addEvents(){
+        pop_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogPost.show();
+            }
+        });
         imgMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,7 +170,17 @@ public class HomeFragment extends Fragment {
         imgPost=dialogPost.findViewById(R.id.pop_add);
         progressBar=dialogPost.findViewById(R.id.pop_progressBar2);
 
-        Glide.with(getContext()).load(mUser.getPhotoUrl()).into(img_Avatarr);
+        mReference.child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user=dataSnapshot.getValue(User.class);
+                Glide.with(getContext()).load(user.getPhotoImage()).into(img_Avatarr);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         imgPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,34 +194,45 @@ public class HomeFragment extends Fragment {
                     imgPost.setVisibility(View.VISIBLE);
                 }
                 else{
-                    // do something
-                    StorageReference mStorageReference= FirebaseStorage.getInstance().getReference("blog_images");
-                    final StorageReference imageFilePath=mStorageReference.child(uriPictureSelected.getLastPathSegment());
-                    imageFilePath.putFile(uriPictureSelected).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    mReference.child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
                         @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            final User user=dataSnapshot.getValue(User.class);
+                            StorageReference mStorageReference= FirebaseStorage.getInstance().getReference("blog_images");
+                            final StorageReference imageFilePath=mStorageReference.child(uriPictureSelected.getLastPathSegment());
+                            imageFilePath.putFile(uriPictureSelected).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
-                                public void onSuccess(Uri uri) {
-                                    String imageDowloadLink=uri.toString();
-                                    Post post=new Post(edtTitle.getText().toString(),
-                                            edtDes.getText().toString(),
-                                            imageDowloadLink,
-                                            mUser.getUid(),
-                                            mUser.getPhotoUrl().toString(),mUser.getDisplayName());
-                                    // add post with firebase database
-                                    addPost(post);
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    showMessage(e.getMessage());
-                                    progressBar.setVisibility(View.INVISIBLE);
-                                    imgPost.setVisibility(View.VISIBLE);
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            String imageDowloadLink=uri.toString();
+                                            Post post=new Post(edtTitle.getText().toString(),
+                                                    edtDes.getText().toString(),
+                                                    imageDowloadLink,
+                                                    user.getUserId(),
+                                                    user.getPhotoImage(),user.getUserName());
+                                            // add post with firebase database
+                                            addPost(post);
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            showMessage(e.getMessage());
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                            imgPost.setVisibility(View.VISIBLE);
+                                        }
+                                    });
                                 }
                             });
                         }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
                     });
+                    // do something
+
 
                 }
             }

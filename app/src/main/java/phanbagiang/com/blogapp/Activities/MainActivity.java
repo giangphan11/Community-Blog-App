@@ -3,6 +3,7 @@ package phanbagiang.com.blogapp.Activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -16,6 +17,11 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
@@ -29,6 +35,7 @@ import androidx.appcompat.widget.Toolbar;
 import java.net.URI;
 
 import phanbagiang.com.blogapp.R;
+import phanbagiang.com.blogapp.model.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,10 +43,15 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawer;
     private NavigationView navigationView;
 
-
+    View headerView;
+    TextView txtName;
+    TextView txtMail;
+    ImageView image;
+    private static final String TAG = "MainActivity";
     //Firebase;
-    FirebaseAuth mFirebaseAuth;
-    FirebaseUser mUser;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mUser;
+    private DatabaseReference mRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,29 +74,34 @@ public class MainActivity extends AppCompatActivity {
         addControls();
     }
     private void addControls(){
-
-
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
+        headerView=navigationView.getHeaderView(0);
+        txtName=headerView.findViewById(R.id.main_txtName);
+        txtMail=headerView.findViewById(R.id.main_txtMail);
+        image=headerView.findViewById(R.id.main_image);
         mFirebaseAuth=FirebaseAuth.getInstance();
-        mUser=mFirebaseAuth.getCurrentUser();
-        if(mUser!=null){
-            View headerView=navigationView.getHeaderView(0);
-            TextView txtName=headerView.findViewById(R.id.main_txtName);
-            TextView txtMail=headerView.findViewById(R.id.main_txtMail);
-            ImageView image=headerView.findViewById(R.id.main_image);
-            txtMail.setText(mUser.getEmail());
-            txtName.setText(mUser.getDisplayName());
-            Glide.with(this)
-                    .load(mUser.getPhotoUrl())
-                    .placeholder(R.drawable.userphoto)
-                    .into(image);
-        }
+        mUser= mFirebaseAuth.getCurrentUser();
+
+        mRef=FirebaseDatabase.getInstance().getReference("Users");
+        mRef.child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user=dataSnapshot.getValue(User.class);
+                txtMail.setText(user.getEmail());
+                txtName.setText(user.getUserName());
+                Glide.with(MainActivity.this)
+                        .load(user.getPhotoImage())
+                        .placeholder(R.drawable.userphoto)
+                        .into(image);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
