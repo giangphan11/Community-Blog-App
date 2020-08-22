@@ -13,7 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashActivity"></activity>
+        <activity android:name=".Activities.UpdateActivity"></activity>
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/AppTheme.Transition">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".Activities.PostDetailActivity" />
         <activity
             android:name=".Activities.MainActivity"
@@ -21,13 +30,7 @@
             android:theme="@style/AppTheme.Transition" />
         <activity
             android:name=".Activities.LoginActivity"
-            android:theme="@style/AppTheme.Login">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.Login"></activity>
         <activity
             android:name=".Activities.RegisterActivity"
             android:theme="@style/AppTheme.register" />

@@ -6,9 +6,14 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+
 
     <string name="menu_home">Home</string>
     <string name="menu_profile">Profile</string>
     <string name="menu_setting">Setting</string>
+
+    <!-- menu main-->
+    <string name="action_update">Cập nhật</string>
+    <string name="action_logout">Đăng xuất</string>
+    <string name="action_info">Liên hệ</string>
 </resources>

@@ -3,7 +3,9 @@ package phanbagiang.com.blogapp.Service;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
@@ -14,12 +16,15 @@ import androidx.core.app.NotificationManagerCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Random;
+
+import phanbagiang.com.blogapp.Activities.MainActivity;
 import phanbagiang.com.blogapp.R;
 
 public class Service extends FirebaseMessagingService {
     private static final String TAG = "Service";
     public static final String CHANEL_ID="chanel11";
-    public static final int ID=1;
+    public static final int ID=11;
     private Notification notification;
 
     @Override
@@ -29,27 +34,32 @@ public class Service extends FirebaseMessagingService {
 
     private void showNotification(String title, String body) {
 
-
+        NotificationManagerCompat notificationManagerCompat=NotificationManagerCompat.from(this);
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-            NotificationChannel notificationChannel=new NotificationChannel(CHANEL_ID,"Notifiacation",NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel notificationChannel=new NotificationChannel(CHANEL_ID,"ch1 by GP",NotificationManager.IMPORTANCE_DEFAULT);
             notificationChannel.setDescription("Giang Phan dev");
-            notificationChannel.setLightColor(Color.YELLOW);
             notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.YELLOW);
             NotificationManager notificationManager= getSystemService(NotificationManager.class);
-            if(notificationManager!=null){
-                notificationManager.createNotificationChannel(notificationChannel);
-            }
+            notificationManager.createNotificationChannel(notificationChannel);
         }
 
-        // create notifi
+        //
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+//        // create notifi
         NotificationCompat.Builder builder=new NotificationCompat.Builder(this,CHANEL_ID)
-                .setSmallIcon(R.drawable.ic_ex)
                 .setContentText(body)
-                .setPriority(NotificationManager.IMPORTANCE_DEFAULT)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(title)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationManager.IMPORTANCE_DEFAULT)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
                 .setWhen(System.currentTimeMillis());
-
-        NotificationManagerCompat notificationManagerCompat=NotificationManagerCompat.from(this);
+//
+//
         notificationManagerCompat.notify(ID,builder.build());
     }
 

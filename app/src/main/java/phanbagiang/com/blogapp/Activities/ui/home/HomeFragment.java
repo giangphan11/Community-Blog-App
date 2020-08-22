@@ -35,6 +35,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -78,6 +79,7 @@ public class HomeFragment extends Fragment {
 
     private ProgressBar progressBar;
     private RecyclerView listPost;
+    private ShimmerFrameLayout shimmerFrameLayout;
     private LinearLayoutManager linearLayoutManager;
     PostAdapter postAdapter;
     List<Post>mData;
@@ -96,6 +98,7 @@ public class HomeFragment extends Fragment {
 //                textView.setText(s);
 //            }
 //        });
+        shimmerFrameLayout=root.findViewById(R.id.shimmer_layout);
         pop_fab=root.findViewById(R.id.home_fab);
         listPost=root.findViewById(R.id.list_post);
         mUser= FirebaseAuth.getInstance().getCurrentUser();
@@ -124,6 +127,9 @@ public class HomeFragment extends Fragment {
                     Post post=data.getValue(Post.class);
                     mData.add(post);
                 }
+                shimmerFrameLayout.stopShimmer();
+                listPost.setVisibility(View.VISIBLE);
+                pop_fab.setVisibility(View.VISIBLE);
                 postAdapter.notifyDataSetChanged();
             }
 
@@ -134,7 +140,17 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        shimmerFrameLayout.startShimmer();
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        shimmerFrameLayout.stopShimmer();
+    }
 
     private void addEvents(){
         pop_fab.setOnClickListener(new View.OnClickListener() {

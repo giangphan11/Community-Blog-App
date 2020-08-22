@@ -8,8 +8,22 @@
     android:layout_height="match_parent"
     tools:context=".Activities.ui.home.HomeFragment">
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include layout="@layout/simmer_holder"/>
+            <include layout="@layout/simmer_holder"/>
+            <include layout="@layout/simmer_holder"/>
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_post"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
@@ -23,6 +37,7 @@
         app:backgroundTint="@color/colorPrimary"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:layout_anchor="@id/list_post"
+        android:visibility="gone"
         app:layout_anchorGravity="bottom|right|end"
         app:fabSize="auto"
         android:layout_height="wrap_content"/>

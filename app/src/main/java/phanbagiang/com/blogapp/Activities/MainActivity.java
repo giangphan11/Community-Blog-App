@@ -117,12 +117,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId()==R.id.mnuLog){
-            mFirebaseAuth.signOut();
-            Intent intent=new Intent(MainActivity.this,LoginActivity.class);
-            startActivity(intent);
-            finish();
+        switch (item.getItemId()){
+            case R.id.action_log:
+                mFirebaseAuth.signOut();
+                Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            case R.id.action_update:
+                Intent intent1=new Intent(MainActivity.this, UpdateActivity.class);
+                startActivity(intent1);
+                return true;
         }
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 }
