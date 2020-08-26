@@ -3,14 +3,17 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Giang phan</string>
+    <string name="nav_header_subtitle">yourname@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
 
 
     <string name="menu_home">Home</string>
     <string name="menu_profile">Profile</string>
     <string name="menu_setting">Setting</string>
+    <string name="lipsum1">Lorem Ipsum is simply dummy text of the printing and typesetting industry</string>
+    <string name="lipsum2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s</string>
+    <string name="lipsum3">, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged</string>
 
     <!-- menu main-->
     <string name="action_update">Cập nhật</string>

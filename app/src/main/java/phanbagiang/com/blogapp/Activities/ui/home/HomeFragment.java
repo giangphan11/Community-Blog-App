@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment {
                 mData.clear();
                 for(DataSnapshot data :dataSnapshot.getChildren()){
                     Post post=data.getValue(Post.class);
-                    mData.add(post);
+                    mData.add(0,post);
                 }
                 shimmerFrameLayout.stopShimmer();
                 listPost.setVisibility(View.VISIBLE);

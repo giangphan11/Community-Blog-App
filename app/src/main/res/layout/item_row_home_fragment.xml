@@ -81,12 +81,12 @@
             android:id="@+id/row_tick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/row_username"
             app:layout_constraintStart_toEndOf="@+id/row_username"
             app:layout_constraintTop_toTopOf="@+id/row_username"
-            app:srcCompat="@drawable/ic_tick20px" />
+            app:srcCompat="@drawable/ic_tick18px" />
 
         <TextView
             android:id="@+id/row_date"

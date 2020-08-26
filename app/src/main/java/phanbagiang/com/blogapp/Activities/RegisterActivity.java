@@ -71,6 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
         regPassword2=findViewById(R.id.regPassword2);
         regBtn=findViewById(R.id.regbtn);
         progressBar=findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
         img_btnBack=findViewById(R.id.reg_btnBaack);
         // firebase
         mAuth=FirebaseAuth.getInstance();

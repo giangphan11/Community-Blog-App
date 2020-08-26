@@ -7,19 +7,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.ui.home.HomeFragment">
-
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:orientation="vertical"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <include layout="@layout/simmer_holder"/>
-            <include layout="@layout/simmer_holder"/>
-            <include layout="@layout/simmer_holder"/>
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <include layout="@layout/simmer_holder"/>
+                <include layout="@layout/simmer_holder"/>
+                <include layout="@layout/simmer_holder"/>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
     </com.facebook.shimmer.ShimmerFrameLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_post"

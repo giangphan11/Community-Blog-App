@@ -69,7 +69,7 @@
 
     <EditText
         android:id="@+id/regName"
-        android:layout_width="265dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:background="@drawable/edt_custom"
@@ -90,7 +90,7 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:background="@drawable/edt_custom"
         android:id="@+id/regEmail"
-        android:layout_width="265dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:ems="10"
@@ -106,7 +106,7 @@
         android:paddingLeft="20dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:id="@+id/regPassword1"
-        android:layout_width="265dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/edt_custom"
@@ -124,7 +124,7 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:background="@drawable/edt_custom"
         android:id="@+id/regPassword2"
-        android:layout_width="265dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:ems="10"
@@ -135,14 +135,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/regPassword1" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/regbtn"
-        android:layout_width="265dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:background="@drawable/btn_custom"
         android:text="Đăng ký"
         android:textColor="#fff"
+        android:fontFamily="@font/font_avo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"

@@ -14,7 +14,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -40,7 +39,7 @@ import phanbagiang.com.blogapp.Adapter.CommentAdapter;
 import phanbagiang.com.blogapp.R;
 import phanbagiang.com.blogapp.model.Comment;
 import phanbagiang.com.blogapp.model.User;
-
+import phanbagiang.com.blogapp.postdetail.ZoomImageActivity;
 
 
 public class PostDetailActivity extends AppCompatActivity {
@@ -60,12 +59,13 @@ public class PostDetailActivity extends AppCompatActivity {
     DatabaseReference mRefUserCurrent;
 
     private Intent intent;
+    private String pictureMain;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_detail);
         Window window=getWindow();
-        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        //window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         addControls();
         addEvents();
     }
@@ -113,6 +113,14 @@ public class PostDetailActivity extends AppCompatActivity {
 
             }
         });
+        imgMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(PostDetailActivity.this, ZoomImageActivity.class);
+                intent.putExtra("iamge_main",pictureMain);
+                startActivity(intent);
+            }
+        });
     }
     private void addControls(){
         mUser= FirebaseAuth.getInstance().getCurrentUser();
@@ -144,7 +152,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
 
 
-        String pictureMain=intent.getStringExtra("pic");
+        pictureMain=intent.getStringExtra("pic");
         String pictureUser=intent.getStringExtra("pic2");
         String title=intent.getStringExtra("title");
         String des=intent.getStringExtra("des");

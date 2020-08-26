@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     View headerView;
     TextView txtName;
     TextView txtMail;
-    ImageView image;
+    ImageView image, imgCheck;
     private static final String TAG = "MainActivity";
     //Firebase;
     private FirebaseAuth mFirebaseAuth;
@@ -69,12 +69,24 @@ public class MainActivity extends AppCompatActivity {
 
         // update header
         addControls();
+        addEvents();
     }
+
+    private void addEvents() {
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
     private void addControls(){
         headerView=navigationView.getHeaderView(0);
         txtName=headerView.findViewById(R.id.main_txtName);
         txtMail=headerView.findViewById(R.id.main_txtMail);
         image=headerView.findViewById(R.id.main_image);
+        imgCheck=headerView.findViewById(R.id.main_check);
         mFirebaseAuth=FirebaseAuth.getInstance();
         mUser= mFirebaseAuth.getCurrentUser();
 
@@ -90,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
                         .load(user.getPhotoImage())
                         .placeholder(R.drawable.userphoto)
                         .into(image);
+                if(user.isCheck()){
+                    imgCheck.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override

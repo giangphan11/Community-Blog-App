@@ -51,9 +51,10 @@ public class Service extends FirebaseMessagingService {
 //        // create notifi
         NotificationCompat.Builder builder=new NotificationCompat.Builder(this,CHANEL_ID)
                 .setContentText(body)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_ex)
                 .setContentTitle(title)
                 .setAutoCancel(true)
+                .setColor(Color.BLUE)
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationManager.IMPORTANCE_DEFAULT)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
